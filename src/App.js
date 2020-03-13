@@ -1,26 +1,62 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Table from 'react-bootstrap/Table';
 import './App.css';
+import { connect } from 'react-redux';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  render() {
+    console.log(this.props.testStore);
+    return (
+      <div>
+        <Table responsive>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Table heading</th>
+      <th>Table heading</th>
+      <th>Table heading</th>
+      <th>Table heading</th>
+      <th>Table heading</th>
+      <th>Table heading</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      {this.props.testStore.map((track, index) => 
+        <td key={index}>{track}</td>
+      )}
+      
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+      <td>Table cell</td>
+    </tr>
+  </tbody>
+</Table>
+
+
+      </div>
+    );
+  }
 }
 
-export default App;
+export default connect(
+  state => ({
+    testStore: state
+  }),
+  dispatch => ({})
+)(App);
