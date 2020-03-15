@@ -1,27 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import setStore from './store';
 import './index.css';
 import App from './App';
+import data from './data/data';
 
-const initialState = [
-	'1',
-	'second row',
-	'third td'
-];
-
-function tableList(state = initialState, action) {
-	if (action.type === 'ADD_DATA') {
-		return [
-			...state,
-			action.payload
-		];
+const initialState = {
+	app: {
+		employeeList: data
 	}
-	return state;
-}
+};
 
-const store = createStore(tableList);
+
+
+// function tableList(state = initialState, action) {
+// 	if (action.type === 'ADD_DATA') {
+// 		return [
+// 			...state,
+// 			action.payload
+// 		];
+// 	}
+// 	return state;
+// }
+
+const store = setStore(initialState);
 
 ReactDOM.render(
     <Provider store={store}>
