@@ -8,10 +8,40 @@ import { compose } from "recompose";
 import * as actions from "./actions/actions";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchTerm: '',
+      currentlyDisplayed: this.props.collection
+    }
+
+this.onInputChange = this.onInputChange.bind(this);
+
+  }
+
+  onInputChange(event) {
+    console.log(event.target.value);
+let newDisplayed = this.props.collection.filter(person => {
+  return (
+    person.firstName.includes(event.target.value.toLowerCase()) || 
+    person.lastName.includes(event.target.value.toLowerCase()) 
+    
+    )})
+this.setState({
+  searchTerm: event.target.value,
+  currentlyDisplayed: newDisplayed
+});
+  }
+  searchInput() {
+    console.log(this.searchInput.value)
+  }
   render() {
 
     return (
       <div>
+        <input type="text" onChange={this.onInputChange}/>
+        <button onClick={this.searchInput.bind(this)}>Search</button>
         <Table responsive>
   <thead>
     <tr>
@@ -24,13 +54,15 @@ class App extends Component {
 <th onClick={() => this.props.setSortParams("position")}>Position</th>
 
 <th onClick={() => this.props.setSortParams("hiringAt", "date")}>Hired At</th>
+<th onClick={() => this.props.setSortParams("salary", "float")}>Salary</th>
 <th onClick={() => this.props.setSortParams("email")}>e-mail</th>
-<th onClick={() => this.props.setSortParams("salary")}>Salary</th>
-<th onClick={() => this.props.setSortParams("active")}>Active</th>
+
+<th onClick={() => this.props.setSortParams("isActive")}>Active</th>
+
     </tr>
   </thead>
   <tbody>
-  {this.props.collection.map(person => (
+  {this.state.currentlyDisplayed.map(person => (
 
 <tr key={person.id}>
           <td>{person.firstName}</td>
@@ -47,8 +79,8 @@ class App extends Component {
           <td>{person.email}</td>
           <td>{person.isActive}</td>
 
-          <td>{person.location?person.location:''}
-          </td>
+          {/* <td>{person.location?person.location:''}
+          </td> */}
 
 </tr>
 
@@ -66,7 +98,7 @@ class App extends Component {
 
 const mapStateToProps = (state, props) => ({
   collection: getSortedEmployeeCollection(state),
-  sortParams: sortSelector(state)
+  sortParams: sortSelector(state),
 });
 
 const mapDispatchToProps = dispatch => ({
