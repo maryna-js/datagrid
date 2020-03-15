@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
+import TableBody from './table/body';
 import './App.css';
 import { getSortedEmployeeCollection, sortSelector } from "./selectors";
 import { connect } from 'react-redux';
@@ -13,11 +14,11 @@ class App extends Component {
 
     this.state = {
       searchTerm: '',
-      currentlyDisplayed: this.props.collection
+      currentlyDisplayed: this.props.collection,
     }
 
 this.onInputChange = this.onInputChange.bind(this);
-this.change = this.change.bind(this);
+// this.change = this.change.bind(this);
 
   }
 
@@ -37,9 +38,11 @@ this.setState({
   }
 
   change(event) {
+
     if (event.target.value === 'all') {
       this.setState({
-        currentlyDisplayed: this.props.collection
+        currentlyDisplayed: this.props.collection,
+        toggle: event.target.value
       });
     }
     else {
@@ -48,18 +51,34 @@ this.setState({
           person.isActive.toLowerCase().includes(event.target.value.toLowerCase()) 
           )})
       this.setState({
-        currentlyDisplayed: newDisplayed
+        currentlyDisplayed: newDisplayed,
+        toggle: event.target.value
       });
     }
 
   }
 
   render() {
+  
+    let collection = this.props.collection;
+    if (this.state.toggle === 'all') {
+      collection = this.props.collection
+    }
+// if (this.state.searchTerm && this.state.toggle === 'all') {
+//   collection = this.state.currentlyDisplayed
+// }
+if (this.state.searchTerm) {
+  collection = this.state.currentlyDisplayed
+}
 
+if (this.state.toggle === 'yes' || this.state.toggle === 'no') {
+  collection = this.state.currentlyDisplayed
+}
+console.log(this.state.toggle);
     return (
       <div>
         <input type="text" onChange={this.onInputChange}/>
-
+<p>To sort pls clear input</p>
         <Table responsive>
   <thead>
     <tr>
@@ -76,41 +95,15 @@ this.setState({
 <th onClick={() => this.props.setSortParams("email")}>e-mail</th>
 
 <th onClick={() => this.props.setSortParams("isActive")}>Active</th>
-<select onChange={this.change} value={this.state.value}>
-<option value="all">all</option>
+<select onChange={this.change.bind(this)} value={this.state.value}>
+<option value="all">none</option>
   <option value="yes">yes</option>
   <option value="no">no</option>
 </select>
 
     </tr>
   </thead>
-  <tbody>
-  {this.state.currentlyDisplayed.map(person => (
-
-<tr key={person.id}>
-          <td>{person.firstName}</td>
-          <td>{person.lastName}</td>
-          <td className="text-right">{person.age}</td>
-          <td>{person.position}</td>
-          <td>{person.hiredAt}</td>
-          <td className="text-right">
-            {parseFloat(person.salary).toLocaleString("en-US", {
-              style: "currency",
-              currency: "USD"
-            })}
-          </td>
-          <td>{person.email}</td>
-          <td>{person.isActive}</td>
-
-          {/* <td>{person.location?person.location:''}
-          </td> */}
-
-</tr>
-
-))}
-
-  
-  </tbody>
+  <TableBody collection={collection} />
 </Table>
 
 
