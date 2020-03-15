@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import './App.css';
+import { getSortedEmployeeCollection, sortSelector } from "./selectors";
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
 import { compose } from "recompose";
@@ -8,7 +9,7 @@ import * as actions from "./actions/actions";
 
 class App extends Component {
   render() {
-    console.log(this.props.collection);
+
     return (
       <div>
         <Table responsive>
@@ -23,7 +24,7 @@ class App extends Component {
 <th onClick={() => this.props.setSortParams("position")}>Position</th>
 
 <th onClick={() => this.props.setSortParams("hiringAt", "date")}>Hired At</th>
-
+<th onClick={() => this.props.setSortParams("email")}>e-mail</th>
 <th onClick={() => this.props.setSortParams("salary")}>Salary</th>
 <th onClick={() => this.props.setSortParams("active")}>Active</th>
     </tr>
@@ -64,8 +65,8 @@ class App extends Component {
 }
 
 const mapStateToProps = (state, props) => ({
-  collection: state.app.employeeList,
-  sortParams: state.app.sortParams
+  collection: getSortedEmployeeCollection(state),
+  sortParams: sortSelector(state)
 });
 
 const mapDispatchToProps = dispatch => ({
