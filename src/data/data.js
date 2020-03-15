@@ -19,7 +19,7 @@ export const makeFaker = (idx) => {
         // "totalScore": 0,
         // "locationName": faker.address.city(),
         // "taskResults": [],
-         "isActive": faker.random.boolean()? 'YES' : 'NO',
+         "isActive": faker.random.boolean()? 'yes' : 'no',
         //  "location": 
         //     {"city": faker.address.city(), "zipcode": faker.address.zipCode()}
           

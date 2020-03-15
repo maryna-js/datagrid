@@ -17,31 +17,49 @@ class App extends Component {
     }
 
 this.onInputChange = this.onInputChange.bind(this);
+this.change = this.change.bind(this);
 
   }
 
   onInputChange(event) {
-    console.log(event.target.value);
+
 let newDisplayed = this.props.collection.filter(person => {
   return (
-    person.firstName.includes(event.target.value.toLowerCase()) || 
-    person.lastName.includes(event.target.value.toLowerCase()) 
-    
+    person.firstName.toLowerCase().includes(event.target.value.toLowerCase()) || 
+    person.lastName.toLowerCase().includes(event.target.value.toLowerCase()) ||
+    person.position.toLowerCase().includes(event.target.value.toLowerCase()) ||
+    person.email.toLowerCase().includes(event.target.value.toLowerCase()) 
     )})
 this.setState({
   searchTerm: event.target.value,
   currentlyDisplayed: newDisplayed
 });
   }
-  searchInput() {
-    console.log(this.searchInput.value)
+
+  change(event) {
+    if (event.target.value === 'all') {
+      this.setState({
+        currentlyDisplayed: this.props.collection
+      });
+    }
+    else {
+      let newDisplayed = this.props.collection.filter(person => {
+        return (
+          person.isActive.toLowerCase().includes(event.target.value.toLowerCase()) 
+          )})
+      this.setState({
+        currentlyDisplayed: newDisplayed
+      });
+    }
+
   }
+
   render() {
 
     return (
       <div>
         <input type="text" onChange={this.onInputChange}/>
-        <button onClick={this.searchInput.bind(this)}>Search</button>
+
         <Table responsive>
   <thead>
     <tr>
@@ -58,6 +76,11 @@ this.setState({
 <th onClick={() => this.props.setSortParams("email")}>e-mail</th>
 
 <th onClick={() => this.props.setSortParams("isActive")}>Active</th>
+<select onChange={this.change} value={this.state.value}>
+<option value="all">all</option>
+  <option value="yes">yes</option>
+  <option value="no">no</option>
+</select>
 
     </tr>
   </thead>
