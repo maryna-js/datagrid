@@ -4,7 +4,7 @@ faker.seed(781);
 
 export const makeFaker = (idx) => {
     return {
-        // "id": faker.random.uuid(),
+         "id": faker.random.alphaNumeric(3),
         "firstName": faker.name.firstName(),
         "lastName": faker.name.lastName(),
         "age": faker.random.number({
@@ -26,6 +26,6 @@ export const makeFaker = (idx) => {
     };
 };
 
-const data = [...new Array(10)].map((idx) => makeFaker(idx));
+const data = [...new Array(20)].map((idx) => makeFaker(idx));
 
 export default data;

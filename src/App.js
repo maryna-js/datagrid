@@ -58,6 +58,15 @@ this.setState({
 
   }
 
+  deleteContact(rowId){
+    console.log(rowId)
+    let newDisplayed = this.props.collection.filter(row => row.id !== rowId)
+    this.setState({
+      delete: 'delete',
+      currentlyDisplayed: newDisplayed
+    });
+  }
+
   render() {
   
     let collection = this.props.collection;
@@ -70,11 +79,14 @@ this.setState({
 if (this.state.searchTerm) {
   collection = this.state.currentlyDisplayed
 }
+if (this.state.delete) {
+  collection = this.state.currentlyDisplayed
+}
 
 if (this.state.toggle === 'yes' || this.state.toggle === 'no') {
   collection = this.state.currentlyDisplayed
 }
-console.log(this.state.toggle);
+
     return (
       <div>
         <input type="text" onChange={this.onInputChange}/>
@@ -103,9 +115,37 @@ console.log(this.state.toggle);
 
     </tr>
   </thead>
-  <TableBody collection={collection} />
+  <tbody>
+    
+    {collection.map(person => (
+  
+  <tr key={person.id}>
+     <button onClick={() => this.deleteContact(person.id)} className="btn btn-danger">Remove</button>
+            <td>{person.firstName}</td>
+            <td>{person.lastName}</td>
+            <td className="text-right">{person.age}</td>
+            <td>{person.position}</td>
+            <td>{person.hiredAt}</td>
+            <td className="text-right">
+              {parseFloat(person.salary).toLocaleString("en-US", {
+                style: "currency",
+                currency: "USD"
+              })}
+            </td>
+            <td>{person.email}</td>
+            <td>{person.isActive}</td>
+  
+            {/* <td>{person.location?person.location:''}
+            </td> */}
+ 
+  </tr>
+  
+  
+  ))}
+  
+    
+    </tbody>
 </Table>
-
 
       </div>
     );
@@ -118,7 +158,8 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  setSortParams: bindActionCreators(actions.setSortParams, dispatch)
+  setSortParams: bindActionCreators(actions.setSortParams, dispatch),
+  deleteContact: bindActionCreators(actions.deleteContact, dispatch)
 });
 
 const enhance = compose(

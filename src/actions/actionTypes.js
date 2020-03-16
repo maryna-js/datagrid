@@ -1,1 +1,2 @@
 export const SET_SORT_PARAMS = "SET_SORT_PARAMS";
+export const REMOVE_CONTACT = 'REMOVE_CONTACT';

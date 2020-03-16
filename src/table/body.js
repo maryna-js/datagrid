@@ -23,8 +23,9 @@ function TableBody({ collection }) {
       
                 {/* <td>{person.location?person.location:''}
                 </td> */}
-      
+      <button className="btn btn-danger">Remove</button>
       </tr>
+      
       
       ))}
       

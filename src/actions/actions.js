@@ -19,3 +19,20 @@ export function setSortParams(sortKey, sortType) {
     });
   };
 }
+
+export function deleteContact(id) {
+  return (dispatch, getState) => {
+   
+    dispatch({
+      type: types.REMOVE_CONTACT,
+      id: id
+    });
+  };
+}
+
+// export const deleteContact = (id) => {
+//     return {
+//         type: types.REMOVE_CONTACT,
+//         id: id
+//     }
+// }
