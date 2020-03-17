@@ -20,12 +20,17 @@ class App extends Component {
 
     this.state = {
       searchTerm: "",
-      currentlyDisplayed: this.props.collection
+      currentlyDisplayed: this.props.collection,
+      condition:false
     };
 
     this.onInputChange = this.onInputChange.bind(this);
     // this.change = this.change.bind(this);
   }
+
+  handleClick() {
+    this.setState( { condition : !this.state.condition } );
+}
 
   onInputChange(event) {
     let newDisplayed = this.props.collection.filter(person => {
@@ -204,10 +209,10 @@ class App extends Component {
               width={width}
             > */}
             <tbody>
-              {collection.map(person => (
+              {collection.map((person, i) => (
   
-  <tr key={person.id}>
-     
+  <tr key={person.id} >
+
             <td>{person.firstName}</td>
             <td>{person.lastName}</td>
             <td className="text-right">{person.age}</td>
