@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Table from 'react-bootstrap/Table';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import TableBody from './table/body';
+import SortLink from "./sort/sortLink";
+import Button from "./button/button";
 import './App.css';
 import { getSortedEmployeeCollection, sortSelector } from "./selectors";
 import { connect } from 'react-redux';
@@ -66,7 +68,6 @@ class App extends Component {
   }
 
   deleteContact(rowId) {
-    console.log(rowId);
     let newDisplayed = this.props.collection.filter(row => row.id !== rowId);
     this.setState({
       delete: "delete",
@@ -95,35 +96,91 @@ class App extends Component {
 
     return (
       <div>
-        <input type="text" onChange={this.onInputChange} />
-        <p>To sort pls clear input</p>
-        <Table striped bordered hover>
+        <input type="text" onChange={this.onInputChange} className="searchBar"/>
+        <p className="searchBelow">To sort pls clear input</p>
+        <table>
         <thead>
       <tr>
-        <th onClick={() => this.props.setSortParams("firstName")}>
-          First Name
+        <th className="firstColumn">
+        <SortLink
+                  label="First Name"
+                  sortKey="firstName"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
         </th>
 
-        <th onClick={() => this.props.setSortParams("lastName")}>
-          Last Name
+        <th>
+        <SortLink
+                  label="Last Name"
+                  sortKey="lastName"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
         </th>
 
-        <th onClick={() => this.props.setSortParams("age")}>Age</th>
-
-        <th onClick={() => this.props.setSortParams("position")}>
-          Position
+        <th>
+        <SortLink
+                  label="Age"
+                  sortKey="age"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                  textRight
+                />
         </th>
 
-        <th onClick={() => this.props.setSortParams("hiringAt", "date")}>
-          Hired At
+        <th>
+        <SortLink
+                  label="Position"
+                  sortKey="position"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
         </th>
-        <th onClick={() => this.props.setSortParams("salary", "float")}>
-          Salary
-        </th>
-        <th onClick={() => this.props.setSortParams("email")}>e-mail</th>
 
-        <th onClick={() => this.props.setSortParams("isActive")}>
-          Active
+        <th>
+        <SortLink
+                  label="Hired At"
+                  sortKey="hiredAt"
+                  type="date"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
+        </th>
+        <th>
+        <SortLink
+                  label="Salary"
+                  sortKey="salary"
+                  type="float"
+                  sort={this.props.setSortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                  textRight
+                />
+        </th>
+        <th>
+        <SortLink
+                  label="E-mail"
+                  sortKey="email"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
+        </th>
+
+        <th>
+        <SortLink
+                  label="Active"
+                  sortKey="isActive"
+                  sort={this.props.sortParams}
+                  onSort={(key, type) => this.props.setSortParams(key, type)}
+                  onSortClear={() => this.props.clearSortParams()}
+                />
         </th>
         <select
           onChange={this.change.bind(this)}
@@ -136,17 +193,18 @@ class App extends Component {
       </tr>
     </thead>
 
-        <AutoSizer>
+        {/* <AutoSizer>
   {({ height, width }) => (
             <List
               itemData={collection}
               className={'tableMain'}
-              height={height}
+              height={600}
               itemCount={collection.length}
               itemSize={30}
               width={width}
-            >
-              {/* {collection.map(person => (
+            > */}
+            <tbody>
+              {collection.map(person => (
   
   <tr key={person.id}>
      
@@ -162,59 +220,63 @@ class App extends Component {
               })}
             </td>
             <td>{person.email}</td>
-            <td>{person.isActive}</td> */}
+            <td>{person.isActive}</td>
 
-              {/* <td>{person.location?person.location:''}
-            </td> */}
-              {/* <button onClick={() => this.deleteContact(person.id)} className="btn btn-danger">Remove</button>
+              <td>{person.location?person.location:''}
+            </td> 
+              <button onClick={() => this.deleteContact(person.id)} className="btn btn-danger">Remove</button>
   </tr>
   
   
-  ))} */}
-              {ItemRenderer}
+  ))}
+  </tbody>
+              {/* {ItemRenderer}
+              
             </List>
-)}
-</AutoSizer>
-</Table>
+// )}
+</AutoSizer> */}
+</table>
       </div>
     );
   }
 }
 
-class ItemRenderer extends Component {
-  render() {
-    // Access the items array using the "data" prop:
-    const item = this.props.data[this.props.index];
- 
-    return (
-     
-    <tbody>
-     
-        <tr key={item.id}>
-                <td>{item.firstName}</td>
-                <td>{item.lastName}</td>
-                <td className="text-right">{item.age}</td>
-                <td>{item.position}</td>
-                <td>{item.hiredAt}</td>
-                <td className="text-right">
-                  {parseFloat(item.salary).toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD"
-                  })}
-                </td>
-                <td>{item.email}</td>
-                <td>{item.isActive}</td>
-      
-                {/* <td>{person.location?person.location:''}
-                </td> */}
-      <button className="btn btn-danger">Remove</button>
-      </tr>
-
-      </tbody>
+// class ItemRenderer extends Component {
   
-    );
-  }
-}
+//   render() {
+//     console.log(this.props);
+//     // Access the items array using the "data" prop:
+//     const item = this.props.data[this.props.index];
+ 
+//     return (
+     
+//     <tbody>
+     
+//         <tr key={item.id}>
+//                 <td>{item.firstName}</td>
+//                 <td>{item.lastName}</td>
+//                 <td className="text-right">{item.age}</td>
+//                 <td>{item.position}</td>
+//                 <td>{item.hiredAt}</td>
+//                 <td className="text-right">
+//                   {parseFloat(item.salary).toLocaleString("en-US", {
+//                     style: "currency",
+//                     currency: "USD"
+//                   })}
+//                 </td>
+//                 <td>{item.email}</td>
+//                 <td>{item.isActive}</td>
+      
+//                 {/* <td>{person.location?person.location:''}
+//                 </td> */}
+//       {/* <button onClick={() => this.deleteContact(item.id)} className="btn btn-danger">Remove</button> */}
+//       </tr>
+
+//       </tbody>
+  
+//     );
+//   }
+// }
 
 const mapStateToProps = (state, props) => ({
   collection: getSortedEmployeeCollection(state),
@@ -223,6 +285,7 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => ({
   setSortParams: bindActionCreators(actions.setSortParams, dispatch),
+  clearSortParams: bindActionCreators(actions.clearSortParams, dispatch),
   deleteContact: bindActionCreators(actions.deleteContact, dispatch)
 });
 

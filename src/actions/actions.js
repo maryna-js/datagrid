@@ -30,6 +30,15 @@ export function deleteContact(id) {
   };
 }
 
+export function clearSortParams() {
+  return {
+    type: types.SET_SORT_PARAMS,
+    payload: {
+      data: undefined
+    }
+  };
+}
+
 // export const deleteContact = (id) => {
 //     return {
 //         type: types.REMOVE_CONTACT,
